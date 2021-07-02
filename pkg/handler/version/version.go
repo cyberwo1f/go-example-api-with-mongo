@@ -13,15 +13,13 @@ type Handler struct {
 
 type response struct {
 	Version  string `json:"version"`
-	Revision string `json:"revision"`
 }
 
-func NewHandler(logger *zap.Logger, ver, rev string) *Handler {
+func NewHandler(logger *zap.Logger, ver string) *Handler {
 	return &Handler{
 		logger: logger,
 		res: &response{
 			Version:  ver,
-			Revision: rev,
 		},
 	}
 }

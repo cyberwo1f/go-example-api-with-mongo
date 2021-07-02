@@ -32,7 +32,7 @@ func run(ctx context.Context) int {
 		return exitError
 	}
 	defer logger.Sync()
-	logger = logger.With(zap.String("version", version.Version), zap.String("revision", version.Revision))
+	logger = logger.With(zap.String("version", version.Version))
 
 	// load config
 	cfg, err := config.LoadConfig(ctx)
@@ -41,8 +41,8 @@ func run(ctx context.Context) int {
 		return exitError
 	}
 
-	// init connection
-	conn, err := net.Listen("tcp", cfg.Address())
+	// init listener
+	listener, err := net.Listen("tcp", cfg.Address())
 	if err != nil {
 		logger.Error("failed to listen port", zap.Int("port", cfg.Port), zap.Error(err))
 		return exitError
@@ -53,11 +53,11 @@ func run(ctx context.Context) int {
 	defer cancel()
 
 	// init to start http server
-	registry := handler.NewHandler(logger, version.Version, version.Revision)
+	registry := handler.NewHandler(logger, version.Version)
 	httpServer := server.NewServer(registry, &server.Config{Log: logger})
 	wg, ctx := errgroup.WithContext(ctx)
 	wg.Go(func() error {
-		return httpServer.Serve(conn)
+		return httpServer.Serve(listener)
 	})
 
 	sigCh := make(chan os.Signal, 1)

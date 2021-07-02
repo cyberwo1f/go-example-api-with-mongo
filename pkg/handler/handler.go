@@ -9,9 +9,9 @@ type Handler struct {
 	Version *version.Handler
 }
 
-func NewHandler(logger *zap.Logger, ver, rev string) *Handler {
+func NewHandler(logger *zap.Logger, ver string) *Handler {
 	h := &Handler{
-		Version: version.NewHandler(logger.Named("version"), ver, rev),
+		Version: version.NewHandler(logger.Named("version"), ver),
 	}
 
 	return h

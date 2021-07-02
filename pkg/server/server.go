@@ -36,12 +36,12 @@ func NewServer(registry *handler.Handler, cfg *Config) *Server {
 	return s
 }
 
-func (s *Server) Serve(conn net.Listener) error {
+func (s *Server) Serve(listener net.Listener) error {
 	server := &http.Server{
 		Handler: s.Mux,
 	}
 	s.server = server
-	if err := server.Serve(conn); err != nil && err != http.ErrServerClosed {
+	if err := server.Serve(listener); err != nil && err != http.ErrServerClosed {
 		return err
 	}
 
