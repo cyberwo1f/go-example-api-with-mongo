@@ -17,7 +17,7 @@ type Server struct {
 	Handler http.Handler
 	server  *http.Server
 	handler *handler.Handler
-	log    *zap.Logger
+	log     *zap.Logger
 }
 
 func NewServer(registry *handler.Handler, cfg *Config) *Server {

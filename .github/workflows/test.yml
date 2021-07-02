@@ -2,8 +2,15 @@ name: Test
 
 on:
   push:
-    tags:
-      - "v[0-9]+.[0-9]+.[0-9]"
+    branches:
+      - master
+    paths-ignore:
+      - '**.md'
+      - '**.env*'
+  pull_request:
+    paths-ignore:
+      - '**.md'
+      - '**.env*'
 
 jobs:
 

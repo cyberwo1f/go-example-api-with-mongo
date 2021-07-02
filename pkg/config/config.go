@@ -8,7 +8,7 @@ import (
 )
 
 type Config struct {
-	Port   int    `env:"PORT,required"`
+	Port int `env:"PORT,required"`
 }
 
 func LoadConfig(ctx context.Context) (*Config, error) {
