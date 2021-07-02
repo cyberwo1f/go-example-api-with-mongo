@@ -1,6 +1,6 @@
 # Golang Example API
 
-![Test](https://github.com/Fantamstick/psg-japirate-backend/workflows/Test/badge.svg?branch=master)
+![Test](https://github.com/Fantamstick/go-example-api/workflows/Test/badge.svg?branch=master)
 
 ## How to run
 
