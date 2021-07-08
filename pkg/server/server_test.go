@@ -127,13 +127,13 @@ func TestServer(t *testing.T) {
 		assert.Greater(t, len(messages), 0)
 
 		assert.Contains(t, messages, entity.Message{
-			Id:   1,
-			UserId: 1,
+			Id:      1,
+			UserId:  1,
 			Message: "test message id 1",
 		})
 		assert.Contains(t, messages, entity.Message{
-			Id:   2,
-			UserId: 1,
+			Id:      2,
+			UserId:  1,
 			Message: "test message id 2",
 		})
 	})
@@ -155,13 +155,13 @@ func TestServer(t *testing.T) {
 		assert.Greater(t, len(messages), 0)
 
 		assert.Contains(t, messages, entity.Message{
-			Id:   3,
-			UserId: 2,
+			Id:      3,
+			UserId:  2,
 			Message: "test message id 3",
 		})
 		assert.Contains(t, messages, entity.Message{
-			Id:   4,
-			UserId: 2,
+			Id:      4,
+			UserId:  2,
 			Message: "test message id 4",
 		})
 	})
