@@ -5,6 +5,7 @@ import (
 	"github.com/Fantamstick/go-example-api/pkg/domain/entity"
 	"github.com/Fantamstick/go-example-api/pkg/domain/repository"
 	"go.mongodb.org/mongo-driver/bson"
+	"go.mongodb.org/mongo-driver/bson/primitive"
 	"go.mongodb.org/mongo-driver/mongo"
 	"go.mongodb.org/mongo-driver/mongo/options"
 )
@@ -28,11 +29,11 @@ func NewMessageRepository(db *mongo.Database) *MessageRepo {
 func (r MessageRepo) ListMessages(ctx context.Context, userId int) ([]entity.Message, error) {
 	messages := make([]entity.Message, 0)
 	srt := bson.D{
-		{"id", -1},
+		primitive.E{Key: "id", Value: -1},
 	}
 	opt := options.Find().SetSort(srt)
 	flt := bson.D{
-		{"userId", userId},
+		primitive.E{Key: "userId", Value: userId},
 	}
 
 	cur, err := r.col.Find(ctx, flt, opt)

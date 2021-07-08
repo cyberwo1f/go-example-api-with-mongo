@@ -5,6 +5,7 @@ import (
 	"github.com/Fantamstick/go-example-api/pkg/domain/entity"
 	"github.com/Fantamstick/go-example-api/pkg/domain/repository"
 	"go.mongodb.org/mongo-driver/bson"
+	"go.mongodb.org/mongo-driver/bson/primitive"
 	"go.mongodb.org/mongo-driver/mongo"
 	"go.mongodb.org/mongo-driver/mongo/options"
 )
@@ -28,7 +29,7 @@ func NewUserRepository(db *mongo.Database) *UserRepo {
 func (r UserRepo) ListUsers(ctx context.Context) ([]entity.User, error) {
 	users := make([]entity.User, 0)
 	srt := bson.D{
-		{"id", -1},
+		primitive.E{Key: "id", Value: -1},
 	}
 	opt := options.Find().SetSort(srt)
 	cur, err := r.col.Find(ctx, bson.D{}, opt)
