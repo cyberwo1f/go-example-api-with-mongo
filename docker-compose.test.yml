@@ -12,11 +12,3 @@ services:
       MONGO_INITDB_ROOT_PASSWORD: password
       MONGO_INITDB_DATABASE: example
       TZ: Asia/Tokyo
-  example-api:
-    build: .
-    env_file:
-      - .env
-    ports:
-      - "8080:8080"
-    depends_on:
-      - mongo

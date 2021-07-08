@@ -34,8 +34,18 @@ jobs:
         run: diff -u <(echo -n) <(gofmt -d -s .)
       - name: Run go vet
         run: go vet ./...
+      - name: Run docker mongodb
+        run: docker-compose -f docker-compose.test.yml up -d
+      - name: Wait / Sleep
+        uses: jakejarvis/wait-action@v0.1.0
+        with:
+          time: '20s'
       - name: Run go test
         run: go test -v -race -coverprofile coverage.txt -covermode atomic ./...
+        env:
+          PORT: 8080
+          MONGODB_DATABASE: example
+          MONGODB_URL: mongodb://root:password@localhost:27017
         
   build:
     name: Build

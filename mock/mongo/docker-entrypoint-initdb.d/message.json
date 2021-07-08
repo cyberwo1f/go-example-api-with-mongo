@@ -1,0 +1,6 @@
+[
+	{"id": 1, "userId": 1, "message": "test message id 1"},
+	{"id": 2, "userId": 1, "message": "test message id 2"},
+	{"id": 3, "userId": 2, "message": "test message id 3"},
+	{"id": 4, "userId": 2, "message": "test message id 4"}
+]

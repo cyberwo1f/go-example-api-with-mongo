@@ -53,6 +53,8 @@ func (s *Server) GracefulShutdown(ctx context.Context) error {
 }
 
 func (s *Server) registerHandler() {
+	s.Mux.Handle("/user/list", s.handler.V1.GetUsers())
+	s.Mux.Handle("/message/list/", s.handler.V1.GetMessages())
 	s.Mux.Handle("/healthz", s.healthCheckHandler())
 	s.Mux.Handle("/version", s.handler.Version.GetVersion())
 }

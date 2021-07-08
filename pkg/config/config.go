@@ -9,6 +9,13 @@ import (
 
 type Config struct {
 	Port int `env:"PORT,required"`
+	DB   *databaseConfig
+}
+
+type databaseConfig struct {
+	Database string `env:"MONGODB_DATABASE,required"`
+	URL      string `env:"MONGODB_URL,required"`
+	Source   string `env:"MONGODB_SOURCE"`
 }
 
 func LoadConfig(ctx context.Context) (*Config, error) {
