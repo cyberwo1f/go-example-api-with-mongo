@@ -34,7 +34,7 @@ func TestServer(t *testing.T) {
 		t.Errorf("failed to load config: %s\n", err)
 	}
 
-	// init test server
+	// init db
 	mongoClient, err := mongo.NewClient(options.Client().ApplyURI(cfg.DB.URL))
 	if err != nil {
 		t.Errorf("failed to create mongo db client: %s\n", err)
@@ -55,11 +55,13 @@ func TestServer(t *testing.T) {
 	repositories, err := persistence.NewRepositories(mongoDB)
 	assert.NoError(t, err)
 
+	// start server
 	registry := handler.NewHandler(logger, repositories, "v1.0-test")
 	s := NewServer(registry, &Config{Log: logger})
 	testServer := httptest.NewServer(s.Mux)
 	defer testServer.Close()
 
+	// start API test
 	t.Run("check /healthz", func(t *testing.T) {
 		res, err := http.Get(testServer.URL + "/healthz")
 		assert.NoError(t, err)
