@@ -17,6 +17,18 @@ jobs:
   test:
     name: Test
     runs-on: ubuntu-latest
+
+    services:
+      mongodb:
+        image: mongo:4.4.2
+        env:
+          MONGO_INITDB_ROOT_USERNAME: root
+          MONGO_INITDB_ROOT_PASSWORD: password
+          MONGO_INITDB_DATABASE: example
+          TZ: Asia/Tokyo
+        ports:
+          - 27017:27017
+
     steps:
       - name: Set up Go 1.16
         uses: actions/setup-go@v2
@@ -29,17 +41,15 @@ jobs:
           path: ~/go/pkg/mod
           key: ${{ runner.os }}-go-${{ hashFiles('go.sum') }}
           restore-keys: ${{ runner.os }}-go-
+      - name: import test data in MongoDB
+        run: |
+          mongoimport -u root -p password --authenticationDatabase admin --db example --collection user --drop --file ./mock/mongo/docker-entrypoint-initdb.d/user.json --jsonArray
+          mongoimport -u root -p password --authenticationDatabase admin --db example --collection message --drop --file ./mock/mongo/docker-entrypoint-initdb.d/message.json --jsonArray
       - name: Run go fmt
         if: runner.os != 'Windows'
         run: diff -u <(echo -n) <(gofmt -d -s .)
       - name: Run go vet
         run: go vet ./...
-      - name: Run docker mongodb
-        run: docker-compose -f docker-compose.test.yml up -d
-      - name: Wait / Sleep
-        uses: jakejarvis/wait-action@v0.1.0
-        with:
-          time: '20s'
       - name: Run go test
         run: go test -v -race -coverprofile coverage.txt -covermode atomic ./...
         env:
