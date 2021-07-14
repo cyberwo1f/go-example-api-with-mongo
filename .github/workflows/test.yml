@@ -46,8 +46,8 @@ jobs:
       - name: import test data in MongoDB
 #        working-directory: $GITHUB_WORKSPACE
         run: |
-          - mongoimport --db example --collection user --drop --file ./mock/mongo/docker-entrypoint-initdb.d/user.json --jsonArray
-          - mongoimport --db example --collection message --drop --file ./mock/mongo/docker-entrypoint-initdb.d/message.json --jsonArray
+          mongoimport --db example --collection user --drop --file ./mock/mongo/docker-entrypoint-initdb.d/user.json --jsonArray
+          mongoimport --db example --collection message --drop --file ./mock/mongo/docker-entrypoint-initdb.d/message.json --jsonArray
 
       - name: Run go fmt
         if: runner.os != 'Windows'
