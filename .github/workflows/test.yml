@@ -44,6 +44,7 @@ jobs:
           key: ${{ runner.os }}-go-${{ hashFiles('go.sum') }}
           restore-keys: ${{ runner.os }}-go-
       - name: import test data in MongoDB
+        working-directory: $GITHUB_WORKSPACE
         run: ./mock/mongo/docker-entrypoint-initdb.d/2-mongo-init.sh
       - name: Run go fmt
         if: runner.os != 'Windows'
