@@ -45,8 +45,8 @@ jobs:
           restore-keys: ${{ runner.os }}-go-
       - name: import test data in MongoDB
         run: |
-          mongoimport -u root -p password --db example --collection user --drop --file ./mock/mongo/docker-entrypoint-initdb.d/user.json --jsonArray
-          mongoimport -u root -p password --db example --collection message --drop --file ./mock/mongo/docker-entrypoint-initdb.d/message.json --jsonArray
+          mongoimport -u root -p password --authenticationDatabase admin --db example --collection user --drop --file ./mock/mongo/docker-entrypoint-initdb.d/user.json --jsonArray
+          mongoimport -u root -p password --authenticationDatabase admin --db example --collection message --drop --file ./mock/mongo/docker-entrypoint-initdb.d/message.json --jsonArray
 
       - name: Run go fmt
         if: runner.os != 'Windows'
