@@ -26,8 +26,8 @@ jobs:
           MONGO_INITDB_ROOT_PASSWORD: password
           MONGO_INITDB_DATABASE: example
           TZ: Asia/Tokyo
-        volumes:
-          - ./mock/mongo/docker-entrypoint-initdb.d:/docker-entrypoint-initdb.d
+#        volumes:
+#          - ./mock/mongo/docker-entrypoint-initdb.d:/docker-entrypoint-initdb.d
         ports:
           - 27017:27017
 
@@ -43,6 +43,8 @@ jobs:
           path: ~/go/pkg/mod
           key: ${{ runner.os }}-go-${{ hashFiles('go.sum') }}
           restore-keys: ${{ runner.os }}-go-
+      - name: import test data in MongoDB
+        run: ./mock/mongo/docker-entrypoint-initdb.d/2-mongo-init.sh
       - name: Run go fmt
         if: runner.os != 'Windows'
         run: diff -u <(echo -n) <(gofmt -d -s .)
