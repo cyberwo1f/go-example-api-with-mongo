@@ -7,5 +7,5 @@ require (
 	github.com/stretchr/testify v1.7.0
 	go.mongodb.org/mongo-driver v1.6.0
 	go.uber.org/zap v1.18.1
-	golang.org/x/sync v0.0.0-20190911185100-cd5d95a43a6e
+	golang.org/x/sync v0.0.0-20210220032951-036812b2e83c
 )
