@@ -2,7 +2,7 @@ package repository
 
 import (
 	"context"
-	"github.com/Fantamstick/go-example-api/pkg/domain/entity"
+	"github.com/cyberwo1f/go-example-api/pkg/domain/entity"
 )
 
 type IUserRepository interface {

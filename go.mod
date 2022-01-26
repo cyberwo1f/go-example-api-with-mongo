@@ -1,4 +1,4 @@
-module github.com/Fantamstick/go-example-api
+module github.com/cyberwo1f/go-example-api
 
 go 1.16
 

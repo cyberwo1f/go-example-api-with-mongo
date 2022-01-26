@@ -1,7 +1,7 @@
 package v1
 
 import (
-	"github.com/Fantamstick/go-example-api/pkg/infrastracture/persistence"
+	"github.com/cyberwo1f/go-example-api/pkg/infrastracture/persistence"
 	"go.uber.org/zap"
 )
 

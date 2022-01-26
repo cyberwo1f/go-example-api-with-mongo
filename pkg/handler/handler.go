@@ -1,9 +1,9 @@
 package handler
 
 import (
-	v1 "github.com/Fantamstick/go-example-api/pkg/handler/v1"
-	"github.com/Fantamstick/go-example-api/pkg/handler/version"
-	"github.com/Fantamstick/go-example-api/pkg/infrastracture/persistence"
+	v1 "github.com/cyberwo1f/go-example-api/pkg/handler/v1"
+	"github.com/cyberwo1f/go-example-api/pkg/handler/version"
+	"github.com/cyberwo1f/go-example-api/pkg/infrastracture/persistence"
 	"go.uber.org/zap"
 )
 

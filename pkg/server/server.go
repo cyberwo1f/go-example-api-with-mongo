@@ -2,7 +2,7 @@ package server
 
 import (
 	"context"
-	"github.com/Fantamstick/go-example-api/pkg/handler"
+	"github.com/cyberwo1f/go-example-api/pkg/handler"
 	"go.uber.org/zap"
 	"net"
 	"net/http"

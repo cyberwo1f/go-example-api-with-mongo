@@ -16,7 +16,7 @@ RUN go mod download
 COPY . ./
 
 RUN CGO_ENABLED=0 GOOS=linux go install -v \
-            -ldflags="-w -s -X github.com/Fantamstick/go-example-api/pkg/version.Version=${VERSION}" \
+            -ldflags="-w -s -X github.com/cyberwo1f/go-example-api/pkg/version.Version=${VERSION}" \
             ./cmd/example-api/
 
 # Build Docker with Only Server Binary

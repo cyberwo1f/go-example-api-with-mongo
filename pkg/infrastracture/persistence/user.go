@@ -2,8 +2,8 @@ package persistence
 
 import (
 	"context"
-	"github.com/Fantamstick/go-example-api/pkg/domain/entity"
-	"github.com/Fantamstick/go-example-api/pkg/domain/repository"
+	"github.com/cyberwo1f/go-example-api/pkg/domain/entity"
+	"github.com/cyberwo1f/go-example-api/pkg/domain/repository"
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/bson/primitive"
 	"go.mongodb.org/mongo-driver/mongo"

@@ -1,7 +1,7 @@
 package persistence
 
 import (
-	"github.com/Fantamstick/go-example-api/pkg/domain/repository"
+	"github.com/cyberwo1f/go-example-api/pkg/domain/repository"
 	"go.mongodb.org/mongo-driver/mongo"
 )
 
