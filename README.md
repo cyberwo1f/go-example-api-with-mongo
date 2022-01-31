@@ -20,3 +20,10 @@ And then, start the server and the MongoDB by runnig the command below:
 ```console
 $ docker-compose up
 ```
+
+## API Interfaces
+
+| Func | Method | Path | Description |
+| ---- | ---- | ---- | ---- |
+| GetUsers | GET | /user/list | get list by all users |
+| GetMessages | GET | /message/list/:user_id | get all messages for specified user id |
