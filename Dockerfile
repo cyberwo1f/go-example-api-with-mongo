@@ -15,7 +15,7 @@ RUN go mod download
 
 COPY . ./
 
-RUN CGO_ENABLED=0 GOOS=linux go install -v \
+RUN CGO_ENABLED=0 GOOS=linux GOARCH=arm64 go build -o /arm64bins/api -v \
             -ldflags="-w -s -X github.com/cyberwo1f/go-example-api/pkg/version.Version=${VERSION}" \
             ./cmd/example-api/
 
@@ -24,7 +24,7 @@ FROM alpine:latest
 
 RUN apk --no-cache add ca-certificates
 
-COPY --from=0 /go/bin/example-api /bin/server
+COPY --from=0 /arm64bins/api /bin/server
 
 RUN addgroup -g 1001 fantamstick && adduser -D -G fantamstick -u 1001 fantamstick
 

@@ -8,6 +8,7 @@ import (
 	"github.com/cyberwo1f/go-example-api/pkg/handler"
 	"github.com/cyberwo1f/go-example-api/pkg/infrastracture/persistence"
 	"github.com/stretchr/testify/assert"
+	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/mongo"
 	"go.mongodb.org/mongo-driver/mongo/options"
 	"go.mongodb.org/mongo-driver/mongo/readpref"
@@ -53,6 +54,8 @@ func TestServer(t *testing.T) {
 	mongoDB := mongoClient.Database(cfg.DB.Database)
 
 	repositories, err := persistence.NewRepositories(mongoDB)
+	userCol := mongoDB.Collection("user")
+	messageCol := mongoDB.Collection("message")
 	assert.NoError(t, err)
 
 	// start server
@@ -87,6 +90,19 @@ func TestServer(t *testing.T) {
 	})
 
 	t.Run("check /user/list", func(t *testing.T) {
+		// --- 準備 ---
+		// 既存を全部消す
+		_, _ = userCol.DeleteMany(ctx, bson.D{})
+		seeds := []interface{}{
+			entity.User{Id: 1, Name: "Hoge"},
+			entity.User{Id: 2, Name: "Fuga"},
+		}
+		_, er := userCol.InsertMany(ctx, seeds)
+		assert.NoError(t, er)
+		t.Cleanup(func() {
+			_, _ = userCol.DeleteMany(ctx, bson.D{})
+		})
+		// --- 準備 ---
 		res, err := http.Get(testServer.URL + "/user/list")
 		assert.NoError(t, err)
 		assert.Equal(t, res.StatusCode, http.StatusOK)
@@ -113,6 +129,30 @@ func TestServer(t *testing.T) {
 	})
 
 	t.Run("check /message/1", func(t *testing.T) {
+		// --- 準備 ---
+		// 既存を全部消す
+		_, _ = userCol.DeleteMany(ctx, bson.D{})
+		_, _ = messageCol.DeleteMany(ctx, bson.D{})
+		seeds1 := []interface{}{
+			entity.User{Id: 1, Name: "Hoge"},
+			entity.User{Id: 2, Name: "Fuga"},
+		}
+		seeds2 := []interface{}{
+			entity.Message{Id: 1, UserId: 1, Message: "test message id 1"},
+			entity.Message{Id: 2, UserId: 1, Message: "test message id 2"},
+			entity.Message{Id: 3, UserId: 2, Message: "test message id 3"},
+			entity.Message{Id: 4, UserId: 2, Message: "test message id 4"},
+		}
+		_, err := userCol.InsertMany(ctx, seeds1)
+		assert.NoError(t, err)
+		_, err = messageCol.InsertMany(ctx, seeds2)
+		assert.NoError(t, err)
+		t.Cleanup(func() {
+			_, _ = userCol.DeleteMany(ctx, bson.D{})
+			_, _ = messageCol.DeleteMany(ctx, bson.D{})
+		})
+		// --- 準備 ---
+
 		res, err := http.Get(testServer.URL + "/message/list/1")
 		assert.NoError(t, err)
 		assert.Equal(t, res.StatusCode, http.StatusOK)
@@ -141,6 +181,28 @@ func TestServer(t *testing.T) {
 	})
 
 	t.Run("check /message/2", func(t *testing.T) {
+		// --- 準備 ---
+		// 既存を全部消す
+		_, _ = userCol.DeleteMany(ctx, bson.D{})
+		_, _ = messageCol.DeleteMany(ctx, bson.D{})
+		seeds1 := []interface{}{
+			entity.User{Id: 1, Name: "Hoge"},
+			entity.User{Id: 2, Name: "Fuga"},
+		}
+		seeds2 := []interface{}{
+			entity.Message{Id: 3, UserId: 2, Message: "test message id 3"},
+			entity.Message{Id: 4, UserId: 2, Message: "test message id 4"},
+		}
+		_, err := userCol.InsertMany(ctx, seeds1)
+		assert.NoError(t, err)
+		_, err = messageCol.InsertMany(ctx, seeds2)
+		assert.NoError(t, err)
+		t.Cleanup(func() {
+			_, _ = userCol.DeleteMany(ctx, bson.D{})
+			_, _ = messageCol.DeleteMany(ctx, bson.D{})
+		})
+		// --- 準備 ---
+
 		res, err := http.Get(testServer.URL + "/message/list/2")
 		assert.NoError(t, err)
 		assert.Equal(t, res.StatusCode, http.StatusOK)
