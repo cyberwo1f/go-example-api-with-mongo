@@ -1,6 +1,16 @@
-# Golang Example API
+# Golang Example API with MongoDB
 
 ![Test](https://github.com/cyberwo1f/go-example-api/workflows/Test/badge.svg?branch=master)
+
+This repository is a template showing the basic architecture and file system for developing APIs using MongoDB in the Go language.
+
+The architecture references the following design patterns to maintain loose coupling, domain management efficiency, and tuning cost performance.
+
+- DDD
+- clean architecture
+
+This is not a solution for every need, but only a basic architecture.
+It should be rearranged as needed depending on your needs, but note that the relationships between entities, repositories, persistence, and other injections, as well as the scope of responsibility and processes for each package, should be maintained.
 
 ## How to run
 
