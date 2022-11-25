@@ -14,5 +14,4 @@
 *.out
 
 # add manually
-.envrc
 .env

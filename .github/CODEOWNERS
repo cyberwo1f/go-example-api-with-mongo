@@ -5,7 +5,7 @@
 # the repo. Unless a later match takes precedence,
 # @global-owner1 and @global-owner2 will be requested for
 # review when someone opens a pull request.
-*       @cyberwo1f 
+@cyberwo1f
 # リポジトリ内の全てのコードに対して、 @global-owner1 さんと @global-owner2
 # さんがレビューを求められるようになります。
 
