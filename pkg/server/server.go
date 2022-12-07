@@ -3,7 +3,10 @@ package server
 import (
 	"context"
 	"github.com/cyberwo1f/go-example-api/pkg/handler"
+	"github.com/cyberwo1f/go-example-api/pkg/middleware"
+	"github.com/gorilla/mux"
 	"go.uber.org/zap"
+	"log"
 	"net"
 	"net/http"
 )
@@ -13,23 +16,23 @@ type Config struct {
 }
 
 type Server struct {
-	Mux     *http.ServeMux
-	Handler http.Handler
-	server  *http.Server
-	handler *handler.Handler
-	log     *zap.Logger
+	Mux        *mux.Router
+	server     *http.Server
+	handler    *handler.Handler
+	middleware *middleware.Middleware
+	log        *zap.Logger
 }
 
-func NewServer(registry *handler.Handler, cfg *Config) *Server {
-	s := &Server{
-		Mux:     http.NewServeMux(),
-		handler: registry,
+func NewServer(registry *handler.Handler, middleware *middleware.Middleware, cfg *Config) *Server {
+	if cfg == nil {
+		log.Fatalf("config is nil")
 	}
 
-	if cfg != nil {
-		if log := cfg.Log; log != nil {
-			s.log = log
-		}
+	s := &Server{
+		Mux:        mux.NewRouter(),
+		log:        cfg.Log,
+		handler:    registry,
+		middleware: middleware,
 	}
 
 	s.registerHandler()
@@ -53,14 +56,28 @@ func (s *Server) GracefulShutdown(ctx context.Context) error {
 }
 
 func (s *Server) registerHandler() {
-	s.Mux.Handle("/user/list", s.handler.V1.GetUsers())
-	s.Mux.Handle("/message/list/", s.handler.V1.GetMessages())
-	s.Mux.Handle("/healthz", s.healthCheckHandler())
-	s.Mux.Handle("/version", s.handler.Version.GetVersion())
+	// global middleware
+	s.Mux.Use(s.middleware.CorsMiddleware)
+
+	// common
+	s.Mux.Methods(http.MethodOptions).Handler(s.options())
+	s.Mux.Methods(http.MethodGet).Path("/version").Handler(s.handler.Version.GetVersion())
+	s.Mux.Methods(http.MethodGet).Path("/healthz").Handler(s.healthCheckHandler())
+
+	// v1
+	s.Mux.Methods(http.MethodGet).Path("/user/list").Handler(s.handler.V1.GetUsers())
+	s.Mux.Methods(http.MethodGet).Path("/message/list/{id:[0-9]+}").Handler(s.handler.V1.GetMessages())
 }
 
 func (s *Server) healthCheckHandler() http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		w.WriteHeader(http.StatusOK)
+	})
+}
+
+func (s *Server) options() http.Handler {
+	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		s.log.Info("requested option")
 		w.WriteHeader(http.StatusOK)
 	})
 }

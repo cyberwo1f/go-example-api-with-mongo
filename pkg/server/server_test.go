@@ -7,6 +7,7 @@ import (
 	"github.com/cyberwo1f/go-example-api/pkg/domain/entity"
 	"github.com/cyberwo1f/go-example-api/pkg/handler"
 	"github.com/cyberwo1f/go-example-api/pkg/infrastracture/persistence"
+	"github.com/cyberwo1f/go-example-api/pkg/middleware"
 	"github.com/stretchr/testify/assert"
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/mongo"
@@ -60,7 +61,13 @@ func TestServer(t *testing.T) {
 
 	// start server
 	registry := handler.NewHandler(logger, repositories, "v1.0-test")
-	s := NewServer(registry, &Config{Log: logger})
+	newMiddleware := middleware.NewMiddleware(&middleware.Config{
+		AllowedOrigins:     cfg.Cors.AllowedOrigins,
+		AllowedHeaders:     cfg.Cors.AllowedHeaders,
+		AllowedMethods:     cfg.Cors.AllowedMethods,
+		AllowedCredentials: cfg.Cors.AllowedCredentials,
+	})
+	s := NewServer(registry, newMiddleware, &Config{Log: logger})
 	testServer := httptest.NewServer(s.Mux)
 	defer testServer.Close()
 
@@ -128,7 +135,7 @@ func TestServer(t *testing.T) {
 		})
 	})
 
-	t.Run("check /message/1", func(t *testing.T) {
+	t.Run("check /message/list/1", func(t *testing.T) {
 		// --- 準備 ---
 		// 既存を全部消す
 		_, _ = userCol.DeleteMany(ctx, bson.D{})

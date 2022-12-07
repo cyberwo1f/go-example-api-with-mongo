@@ -6,6 +6,7 @@ import (
 	"github.com/cyberwo1f/go-example-api/pkg/config"
 	"github.com/cyberwo1f/go-example-api/pkg/handler"
 	"github.com/cyberwo1f/go-example-api/pkg/infrastracture/persistence"
+	"github.com/cyberwo1f/go-example-api/pkg/middleware"
 	"github.com/cyberwo1f/go-example-api/pkg/server"
 	"github.com/cyberwo1f/go-example-api/pkg/version"
 	"go.mongodb.org/mongo-driver/mongo"
@@ -94,7 +95,13 @@ func run(ctx context.Context) int {
 
 	// init to start http server
 	registry := handler.NewHandler(logger, repositories, version.Version)
-	httpServer := server.NewServer(registry, &server.Config{Log: logger})
+	newMiddleware := middleware.NewMiddleware(&middleware.Config{
+		AllowedOrigins:     cfg.Cors.AllowedOrigins,
+		AllowedHeaders:     cfg.Cors.AllowedHeaders,
+		AllowedMethods:     cfg.Cors.AllowedMethods,
+		AllowedCredentials: cfg.Cors.AllowedCredentials,
+	})
+	httpServer := server.NewServer(registry, newMiddleware, &server.Config{Log: logger})
 	wg, ctx := errgroup.WithContext(ctx)
 	wg.Go(func() error {
 		return httpServer.Serve(listener)
