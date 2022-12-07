@@ -3,17 +3,18 @@ package v1
 import (
 	"context"
 	"encoding/json"
+	"github.com/gorilla/mux"
 	"go.uber.org/zap"
 	"net/http"
 	"strconv"
-	"strings"
 )
 
 func (h *Handler) GetMessages() http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		// check get path parameter
-		param := strings.TrimPrefix(r.URL.Path, "/message/list/")
-		userId, err := strconv.Atoi(param)
+		param := mux.Vars(r)
+		//param := strings.TrimPrefix(r.URL.Path, "/message/list/")
+		userId, err := strconv.Atoi(param["id"])
 		if err != nil {
 			msg := "failed to get path parameter"
 			http.Error(w, msg, http.StatusBadRequest)
