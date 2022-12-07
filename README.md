@@ -31,6 +31,12 @@ And then, start the server and the MongoDB by running the command below:
 $ docker-compose up
 ```
 
+If you want to run go test
+
+```console
+$ docker-compose -f docker-compose.test.yml up -d
+```
+
 ## API Interfaces
 
 | Func        | Method | Path                   | Description                            |
