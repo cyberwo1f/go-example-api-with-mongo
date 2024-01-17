@@ -3,7 +3,7 @@ module github.com/cyberwo1f/go-example-api
 go 1.16
 
 require (
-	github.com/gorilla/mux v1.8.0
+	github.com/gorilla/mux v1.8.1
 	github.com/sethvargo/go-envconfig v0.3.5
 	github.com/stretchr/testify v1.8.0
 	go.mongodb.org/mongo-driver v1.7.2
