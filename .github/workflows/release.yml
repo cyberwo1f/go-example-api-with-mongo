@@ -13,7 +13,7 @@ jobs:
     
     services:
       mongodb:
-        image: mongo:5.0.3
+        image: mongo:5.0.26
         env:
           MONGO_INITDB_ROOT_USERNAME: root
           MONGO_INITDB_ROOT_PASSWORD: password
