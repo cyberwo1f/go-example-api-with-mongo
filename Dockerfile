@@ -1,5 +1,5 @@
 # Build Go Server Binary
-FROM golang:1.17.1-buster
+FROM golang:1.20.5-buster
 
 ARG GITHUB_TOKEN=local
 ARG VERSION=local
